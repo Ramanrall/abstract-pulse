@@ -1,0 +1,180 @@
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:wght@300;400;500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: #060608;
+  --bg1: #0d0d12;
+  --bg2: #12121a;
+  --surface: rgba(255,255,255,0.035);
+  --surface2: rgba(255,255,255,0.06);
+  --border: rgba(255,255,255,0.07);
+  --border2: rgba(255,255,255,0.12);
+  --accent: #7B61FF;
+  --accent2: #00E5FF;
+  --accent3: #FF6B6B;
+  --text: #F0EEF8;
+  --muted: #6B6880;
+  --muted2: #9896A8;
+  --green: #00D97E;
+  --yellow: #FFD166;
+  --tier-bronze: #CD7F32;
+  --tier-silver: #A8A9AD;
+  --tier-gold: #FFD700;
+  --tier-platinum: #00E5FF;
+  --tier-diamond: #B9F2FF;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Syne', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Atmosphere glows ── */
+.bg-glow-top {
+  position: fixed;
+  top: -30%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 900px;
+  height: 600px;
+  background: radial-gradient(ellipse, rgba(123,97,255,0.08) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.bg-glow-bottom {
+  position: fixed;
+  bottom: -20%;
+  right: -10%;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(ellipse, rgba(0,229,255,0.05) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.noise-overlay {
+  position: fixed;
+  inset: 0;
+  opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ── Live dot pulse ── */
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.75); }
+}
+
+.live-dot {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+/* ── Fade up animation ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-up { animation: fadeUp 0.5s ease both; }
+.delay-1 { animation-delay: 0.05s; }
+.delay-2 { animation-delay: 0.10s; }
+.delay-3 { animation-delay: 0.15s; }
+.delay-4 { animation-delay: 0.20s; }
+.delay-5 { animation-delay: 0.25s; }
+
+/* ── Tier bar animation ── */
+@keyframes tierBarGrow {
+  from { width: 0%; }
+}
+
+.tier-bar-animate {
+  animation: tierBarGrow 1.2s cubic-bezier(0.4, 0, 0.2, 1) both;
+  animation-delay: 0.5s;
+}
+
+/* ── Chart bar hover ── */
+.chart-bar {
+  flex: 1;
+  border-radius: 3px 3px 0 0;
+  background: var(--accent);
+  opacity: 0.45;
+  transition: opacity 0.15s;
+  cursor: pointer;
+}
+
+.chart-bar:hover { opacity: 1; }
+.chart-bar.today {
+  opacity: 1;
+  background: var(--accent2);
+}
+
+/* ── Panel card shared base ── */
+.glass-panel {
+  background: var(--bg1);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+}
+
+/* ── Stat card top accent ── */
+.stat-card-hover {
+  position: relative;
+  overflow: hidden;
+  transition: background 0.2s;
+}
+
+.stat-card-hover::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.stat-card-hover:hover::before { opacity: 1; }
+.stat-card-hover:hover { background: var(--bg2); }
+
+/* ── Tier card glow footer ── */
+.tier-glow::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 60px;
+  opacity: 0.06;
+  transition: opacity 0.3s;
+  pointer-events: none;
+}
+
+.tier-glow:hover::after { opacity: 0.12; }
+.tier-bronze::after   { background: var(--tier-bronze); }
+.tier-silver::after   { background: var(--tier-silver); }
+.tier-gold::after     { background: var(--tier-gold); }
+.tier-plat::after     { background: var(--tier-platinum); }
+.tier-dia::after      { background: var(--tier-diamond); }
+.tier-obsidian::after { background: #9B8FA6; }
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
